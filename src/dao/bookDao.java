@@ -61,6 +61,7 @@ public class bookDao {
         boolean flagBookCopy = false;
         boolean flagBookInfo = false;
 
+
         Connection conn = conUt.getConnection();
         String bookInfoSql = "insert into book_info( book_isbn, book_title, book_author,book_publisher, book_published_date) values(?,?,?,?,?); ";
         String bookCopySql = "insert into book_copy (book_isbn) values (?);";
@@ -75,11 +76,15 @@ public class bookDao {
             pstmt.setString(3,bookvo.getAuthor());
             pstmt.setString(4,bookvo.getPublisher());
             pstmt.setTimestamp(5,bookvo.getPublishDate());
+            int check = pstmt.executeUpdate();
+
+            System.out.print("regist check : ");
+            System.out.println(check);
 
             //flag가 0이면 false sql에 행이 없다. 1이면 추가 성공
-            if(pstmt.executeUpdate()==0){
+            if(check==0){
                 flagBookInfo = false;
-            }else{
+            }else {
                 flagBookInfo = true;
             }
 
@@ -88,24 +93,29 @@ public class bookDao {
             System.out.println("book_info problem");
             e.printStackTrace();
             conn.rollback();
+            return false;
         }
 
         // 순서2. book_copy isbn 등록 -> 책 위치, 상태는 default, book_seq 자동생성
         try {
-            PreparedStatement pstmt = conn.prepareStatement(bookCopySql);
-            pstmt.setString(1,bookvo.getIsbn());
+            if(flagBookInfo) {
+                PreparedStatement pstmt = conn.prepareStatement(bookCopySql);
+                pstmt.setString(1, bookvo.getIsbn());
 
-            //flag가 0이면 false sql에 행이 없다. 1이면 추가 성공
-            if(pstmt.executeUpdate()==0){
-                flagBookCopy = false;
+                //flag가 0이면 false sql에 행이 없다. 1이면 추가 성공
+                if (pstmt.executeUpdate() == 0) {
+                    flagBookCopy = false;
+                } else {
+                    flagBookCopy = true;
+                }
             }else{
-                flagBookCopy = true;
+                System.out.println("bookCopy is not updated");
             }
-
         } catch (SQLException e) {
             System.out.println("book_copy problem");
             e.printStackTrace();
             conn.rollback();
+            return false;
         }finally {
             conn.setAutoCommit(true);
         }
@@ -180,10 +190,8 @@ public class bookDao {
     public HashMap<String, Object> bookUpdatePage (int book_seq) {
         Connection conn = conUt.getConnection();
 
-        System.out.println(book_seq);
-
         String sql = "select a.book_seq, b.book_isbn, b.book_title, b.book_author, b.book_publisher, b.book_published_date," +
-                "a.book_position, a.book_status from book_copy a join book_info b on a.book_isbn = b.book_isbn where b.book_seq=?;";
+                "a.book_position, a.book_status from book_copy a join book_info b on a.book_isbn = b.book_isbn where a.book_seq=?;";
         HashMap<String, Object> data = new HashMap<>();
 
         try {
@@ -230,6 +238,8 @@ public class bookDao {
 
         // 순서1. book_info 등록
         try {
+            System.out.print("In bookUpdate : ");
+            System.out.println(bookvo.getPublisher());
             conn.setAutoCommit(false);
 
             PreparedStatement pstmt = conn.prepareStatement(bookInfoUpdateSql);
@@ -240,8 +250,11 @@ public class bookDao {
             pstmt.setTimestamp(5, bookvo.getPublishDate());
             pstmt.setString(6, bookvo.getIsbn());
 
+            int check = pstmt.executeUpdate();
+
+
             //flag가 0이면 false sql에 행이 없다. 1이면 추가 성공
-            if(pstmt.executeUpdate()==0){
+            if(check==0){
                 flagBookInfo = false;
             }else {
                 flagBookInfo = true;
@@ -258,7 +271,7 @@ public class bookDao {
             PreparedStatement pstmt = conn.prepareStatement(bookCopyUpdateSql);
             pstmt.setInt(1, bookvo.getBookSeq());
             pstmt.setString(2,bookvo.getBookPosition());
-            pstmt.setString(3, bookvo.getBookStaus());
+            pstmt.setString(3, bookvo.getBookStatus());
             pstmt.setInt(4, bookvo.getBookSeq());
 
             //flag가 0이면 false sql에 행이 없다. 1이면 추가 성공

@@ -51,7 +51,6 @@
         $(document).ready(function(){
             $('#regist').on('click',function(){
                 if(checkValidationAll()){
-                    alert('저장합니다');
                     $('#frm').attr('action','/bookController?cmd=regist');
                     $('#frm').submit();
                 }else{
@@ -62,6 +61,7 @@
     </script>
 </head>
 <body>
+${param.notRegistFlag=='true'?  "<script>alert('이미 책이 존재합니다!');</script>"  :   ""    }
 <%-- <% String cmd = request.getParameter("cmd"); %>
 <%=cmd.equals("success")?"<script>alert('hello');</script>":""%> --%>
 <form action="" method="post" id="frm">
@@ -77,7 +77,7 @@
         <tr>
             <td>ISBN</td>
             <td colspan="2" id="isbnChk">
-                <input type="text" id="book_isbn" name="book_isbn">
+                <input type="text" id="book_isbn" name="book_isbn" value="EI1234567890">
             </td>
             <td>
                 <input type="hidden" id="flag" value="false">
@@ -86,25 +86,25 @@
         <tr>
             <td>도서명</td>
             <td colspan="2" id="titleChk">
-                <input type="text" id="book_title" name="book_title">
+                <input type="text" id="book_title" name="book_title" value="testcheck">
             </td><td></td>
         </tr>
         <tr>
             <td>저자/역자</td>
             <td colspan="2" id="authorChk">
-                <input type="text" id="book_author" name="book_author">
+                <input type="text" id="book_author" name="book_author" value="testauthor">
             </td><td></td>
         </tr>
         <tr>
             <td>출판사</td>
             <td colspan="2" id="pubChk">
-                <input type="text" id="book_publisher" size="35" name="publisher">
+                <input type="text" id="book_publisher" size="35" name="book_publisher" value="미디어">
             </td><td></td>
         </tr>
         <tr>
             <td>출판일</td>
             <td colspan="2" id="pubDateChk">
-                <input type="text" id="book_published_date" size="35" name="book_published_date">
+                <input type="text" id="book_published_date" size="35" name="book_published_date" value="2023-08-17">
             </td>
             <td></td>
         <tr>
@@ -134,9 +134,9 @@
         <tr>
         <tr>
             <td colspan="4" id="sending">
-                <input type="button" id="regist" value="도서등록">
+                <input type="submit" id="regist" value="도서등록">
                 <input type="reset">
-                <a href="/bookListServlet">도서리스트</a>
+                <a href="/bookController">도서리스트</a>
             </td>
         </tr>
     </table>

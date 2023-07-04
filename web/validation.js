@@ -13,21 +13,24 @@
 // ISBN 유효성 검사 함수
 const checkIsbnValidation = (isbn) => {
 
+    console.log("isbn체크 들어옴");
 	const isbnMaxLen = 12;
 
 
     // 1. null 체크
     if(isbn == null || isbn == undefined || isbn == ''){
-		console.log("isbn이 입력되지 않았습니다.")
+        alert("isbn이 입력되지 않았습니다.");
         return false
     }
     
     // 2. 대문자 시작 2글자 이상, 그 뒤 숫자로만 생성가능, 12글자로 작성 필
     // 첫번째 조건 : ^(시작)[A-Z](대문자 A부터 Z까지){2}(2글자 이상)
     // 두번째 조건 : [0-9](숫자만 가능){12-2}(총 글자 12글자지만, 앞 지정한 2글자 제외해야해서 -2)
-    const regexPattern = new RegExp(`^[A-Z]{2}\d{${isbnMaxLen-2}}$`, 'g');
-    if(regexPattern.test(isbn)){
-        console.log("입력조건이 안맞습니다");
+    const regexPattern = new RegExp(`^[A-Z]{2}\\d{${isbnMaxLen-2}}$`, 'g');
+    const chk =regexPattern.test(isbn);
+    console.log(chk);
+    if(!chk){
+        alert("영문 대문자2개 + 숫자10개로 적어주세요");
 		return false
 	}
 	
@@ -40,7 +43,8 @@ const checkTitleValidation = (book_title) => {
 
     // 1. null 체크
     if(book_title == null || book_title == undefined || book_title == ''){
-		console.log("book_title이 입력되지 않았습니다.")
+        alert("book_title이 입력되지 않았습니다.");
+        console.log("book_title이 입력되지 않았습니다.")
         return false
     }
 
@@ -58,8 +62,10 @@ const checkTitleValidation = (book_title) => {
     
     //도서명은 조건이 필요 없기 때문에 위의 내용을 가지고 추가 삭제 하면 됨
     //숫자, 대소문자, 한글, 정해진 특수기호 등이 포함 가능함
-    const regexPattern = new RegExp(`^[0-9a-zA-Z\p{IsHangul}:().=?]$`);
-    if(regexPattern.test(book_title)){
+    const regexPattern = new RegExp(`^[0-9a-zA-Z\p{IsHangul}:().=?].*$`);
+    console.log("book_title : ")
+    console.log(regexPattern.test(book_title));
+    if(!regexPattern.test(book_title)){
 		return false
 	}
     return true;
@@ -70,13 +76,17 @@ const checkAuthorValidation = (author) => {
  
     // 1. null 체크
     if(author == null || author == undefined || author == ''){
+        alert("author이 입력되지 않았습니다.");
 		console.log("author이 입력되지 않았습니다.")
         return false
     }
 
     //숫자, 대소문자, 한글, 정해진 특수기호 등이 포함 가능함
-    const regexPattern = new RegExp(`^[0-9a-zA-Z\p{IsHangul};[]]$`);
-    if(regexPattern.test(book_title)){
+    const regexPattern = new RegExp(`^[0-9a-zA-Z가-힣; \\[\\]].*$`);
+    console.log("author chk : ");
+    console.log(author);
+    console.log(regexPattern.test(author));
+    if(!regexPattern.test(author)){
 		return false
 	}
     return true;
@@ -87,13 +97,16 @@ const checkPublisherValidation = (publisher)=>{
 	
 	// 1. null 체크
     if(publisher == null || publisher == undefined || publisher == ''){
+        alert("publisher가 입력되지 않았습니다.");
 		console.log("publisher가 입력되지 않았습니다.")
         return false
     }
-	
-	const timestampRegex = new RegExp(`^[0-9a-zA-Z\p{IsHangul}:().=?]$`);
 
-	if (timestampRegex.test(publisher)) {
+    console.log(publisher);
+
+	const regexPattern = new RegExp(`^[0-9a-zA-Z가-힣]*$`);
+
+	if (!regexPattern.test(publisher)) {
    		 return false;
 	}
 
@@ -130,7 +143,7 @@ const checkTimestampValidation = (publish_date) => {
 	
 	const timestampRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 
-	if (timestampRegex.test(String(publish_date))) {
+	if (!timestampRegex.test(String(publish_date))) {
    		 return false;
 	}
 
@@ -151,7 +164,7 @@ const checkPositionValidation = (book_position)=>{
     }
 	
     const regexPattern = new RegExp(`^BS-\\d{3}$`);
-    if(regexPattern.test(book_position)){
+    if(!regexPattern.test(book_position)){
         return false;
     }
     return true;	
@@ -167,7 +180,7 @@ const checkStatusValidation = (book_status)=>{
     }
 	
     const regexPattern = new RegExp(`^BM-\\d{3}$`);
-    if(regexPattern.test(book_status)){
+    if(!regexPattern.test(book_status)){
         return false;
     }
     return true;	
@@ -181,7 +194,7 @@ const checkPhoneValidation = (phone) => {
 	
 	// 010으로 시작하는 번호만 가능, 3-4-4 자리수만 가능
     const regexPattern = new RegExp(`^010-\\d{4}-\\d{4}$`);
-    if(regexPattern.test(phone)){
+    if(!regexPattern.test(phone)){
         return false;
     }
     return true;
@@ -192,7 +205,7 @@ const checkZipValidation = (zip) => {
 	
 	// 01000~63999까지 가능
     const regexPattern = new RegExp(`^(0[1-9][0-9]{3}|[1-5][0-9]{4}|6[0-3][0-9]{3})$`);
-    if(regexPattern.test(zip)){
+    if(!regexPattern.test(zip)){
         return false;
     }
     return true;
@@ -204,7 +217,7 @@ const checkEmailValidation = (email) => {
 
 // 영문자로 시작 gmail, naver만 가능
    const regexPattern = new RegExp(`^[a-zA-Z]+[a-zA-Z0-9]@(gmail|naver).com$`)
-    if(regexPattern.test(email)){
+    if(!regexPattern.test(email)){
 
         return false;
     }
@@ -221,34 +234,38 @@ const checkValidationAll = () => {
     const book_author = document.getElementById("book_author").value;
     const book_publisher = document.getElementById("book_publisher").value;
 
+    console.log(book_publisher);
+
 
     const isbnValidationResult = checkIsbnValidation(book_isbn);
 	if(!isbnValidationResult){
+        alert("ISBN 입력 형식에 맞지 않습니다.");
 		document.getElementById("isbnChk").innerHTML += "<p>" + "ISBN 입력 형식에 맞지 않습니다." + "</p>";
-		return false;
 	}
 
     const titleValidationResult = checkTitleValidation(book_title);
     	if(!titleValidationResult){
 		document.getElementById("titleChk").innerHTML += "<p>" +"도서명 입력 형식에 맞지 않습니다." + "</p>";
-		return false;
 	}
 
     const authorValidationResult = checkAuthorValidation(book_author);
     	if(!authorValidationResult){
 		document.getElementById("authorChk").innerHTML += "<p>" + "저자/역자 입력 형식에 맞지 않습니다."+ "</p>";
-		return false;
 	}
 
     const publisherValidationResult = checkPublisherValidation(book_publisher);
     	if(!publisherValidationResult){
 		document.getElementById("pubChk").innerHTML += "<p>" + "출판사 입력 형식에 맞지 않습니다." + "</p>";
-		return false;
 	}
+    console.log(isbnValidationResult);
+    console.log(titleValidationResult);
+    console.log(authorValidationResult);
+    console.log(publisherValidationResult);
 
+    if(!isbnValidationResult || !titleValidationResult || !authorValidationResult || !publisherValidationResult){
+        return false;
+    }
 	return true;
 
-
-    
 }
 

@@ -9,17 +9,17 @@ import java.util.HashMap;
 
 public class bookService {
     private bookDao dao;
-
     public bookService(){
         dao = new bookDao();
     }
+
+
 
     public boolean registBook(bookVo copy) throws SQLException {
         boolean flag = false;
         flag = dao.bookRegist(copy);
         return flag;
     }
-
     public ArrayList<HashMap> searchBookAll(){
         ArrayList<HashMap> list = null;
         list = dao.bookList();
@@ -34,6 +34,7 @@ public class bookService {
     public HashMap<String, Object> findBook(int bookSeq) {
         HashMap<String, Object> list = null;
         list = dao.bookUpdatePage(bookSeq);
+        System.out.print("list in bookService = ");
         System.out.println(list);
         return list;
     }

@@ -73,7 +73,7 @@ ${param.flag=='true'?  "<script>alert('삭제성공');</script>"  :   ""    }
             <td><a href='./bookController?cmd=view_detail&bookSeq=${copy.book_seq}'>${copy.book_title}</a></td>
             <td>${copy.book_author}</td>
             <td><fmt:formatDate value="${copy.book_published_date}" pattern="yyyy-MM-dd"/> </td>
-            <td><a href="./bookController?cmd=remove&bookSeq=${copy.book_seq}">삭제</a></td></tr>
+            <td><a href="./bookController?cmd=remove&book_seq=${copy.book_seq}&book_isbn=${copy.book_isbn}">삭제</a></td></tr>
     </c:forEach>
     <tr><td colspan="5"><a href="./bookController?cmd=view_regist"><button>도서등록</button></a></td></tr>
 </table>

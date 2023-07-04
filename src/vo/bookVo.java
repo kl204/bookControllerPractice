@@ -3,6 +3,8 @@ package vo;
 import java.sql.Timestamp;
 
 public class bookVo {
+    private int bookSeq;
+
     public int getBookSeq() {
         return bookSeq;
     }
@@ -59,21 +61,20 @@ public class bookVo {
         this.bookPosition = bookPosition;
     }
 
-    public String getBookStaus() {
-        return bookStaus;
+    public String getBookStatus() {
+        return bookStatus;
     }
 
-    public void setBookStaus(String bookStaus) {
-        this.bookStaus = bookStaus;
+    public void setBookStatus(String bookStatus) {
+        this.bookStatus = bookStatus;
     }
 
-    private int bookSeq;
     private String isbn;
     private String title;
     private String author;
     private String publisher;
     private Timestamp publishDate;
     private String bookPosition;
-    private String bookStaus;
+    private String bookStatus;
 
 }
